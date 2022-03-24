@@ -29,18 +29,12 @@ struct result {
 
 bool particle_creation_2D() {
     body::orbital_entity<body::Vector2> test2D = {{1,2}, {1,2}, 20};
-    test2D.name = "Test Particle";
-    //body::properties(test2D);
-
-    return true;
+    return sizeof(test2D) == 40;
 }
 
 bool particle_creation_3D() {
     body::orbital_entity<body::Vector3> test = {{1,2,3}, {1,2,3} , 10};
-    test.name = "Test Particle";
-    //body::properties(test);
-
-    return true;
+    return sizeof(test) == 56;
 }
 
 

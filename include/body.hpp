@@ -37,7 +37,6 @@ namespace nbody {
 
         template<typename T>
         struct orbital_entity {
-            std::string name;
             T position_vector;
             T projection_vector;
             double mass;

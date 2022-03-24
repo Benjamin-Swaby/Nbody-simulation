@@ -19,6 +19,12 @@ add_executable(Nbody
         kernel/launcher.cu
         )
 
+
+
+
+
+
+
 target_include_directories(Nbody
         PRIVATE
         ${PROJECT_SOURCE_DIR}/include)
