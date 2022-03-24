@@ -17,10 +17,14 @@ add_executable(Nbody
         lib/body.cpp
         tests/tests.cpp
         kernel/launcher.cu
+        lib/render.cpp
         )
 
 
-
+INCLUDE(FindPkgConfig)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
+target_link_libraries(Nbody  ${SDL2_LIBRARIES})
 
 
 

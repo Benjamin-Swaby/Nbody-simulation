@@ -1,6 +1,10 @@
 #include "launcher.cuh"
 #include "body.hpp"
+#include "render.hpp"
+#include "colors.h"
+
 #include <iostream>
+#include <SDL2/SDL.h>
 
 using namespace nbody;
  
@@ -93,7 +97,7 @@ cudaDeviceProp getDetails(int deviceId)
 
 
 // 3D launcher 
-void kernel::launcher(body::orbital_entity<body::Vector3> *entities, size_t length){
+void kernel::launcher(body::orbital_entity<body::Vector3> *entities, size_t length, double scope,long long time_end, long long time_step){
 
     std::cout << "Initialising GPU:" << std::endl;
 
@@ -117,16 +121,18 @@ void kernel::launcher(body::orbital_entity<body::Vector3> *entities, size_t leng
 
 
 
-    double time = 0.0;
-    double time_step = 86400;
+    double time = 0.0; // start time
+    //double time_step = 86400; // number of seconds between each step.
 
-    int iterations = 0;
     // main program loop
 
     std::cout << "Start" << std::endl;
     body::properties(entities[0]);
 
-    while (time < 86400 * 365 * 10) { 
+    render::render_object ro = render::init();
+
+    int step_count = 0;
+    while (time < time_end) {  // go for like 10 years
     
 
         calculate_next_projection<<<threads_per_block, number_of_blocks>>>(d_entities, length, time_step);
@@ -145,18 +151,16 @@ void kernel::launcher(body::orbital_entity<body::Vector3> *entities, size_t leng
 
         cudaMemcpy(entities, d_entities, size, cudaMemcpyDeviceToHost);
         // call rendering stuff now //
+        ro = render::render(entities, length, ro, scope);
 
         time+=time_step;
+        step_count++;
+        std::cout << BBLU;
+        std::cout << "Time: " << time << " Seconds " << time / 86400 << " Days of " << time_end / 86400;
+        std::cout << reset;
+        std::cout << std::endl; 
     }
-    
-
-    std::cout << "End:" << std::endl;
-    body::properties(entities[0]);
-
-}
-
-// 2D launcher
-void kernel::launcher(body::orbital_entity<body::Vector2> *entities, size_t length) {
+    std::cout << "Did : " << step_count << " steps " << std::endl; 
 
 }
 

@@ -5,6 +5,9 @@
 */
 
 
+
+
+
 #include <iostream>
 
 #include "body.hpp"
@@ -15,18 +18,19 @@ using namespace nbody;
 
 int main(void) {
     
+    const long long Decade_In_Secs = 86400 * 365 * 10;
+    const long long Day_In_Secs = 86400;
+    const long long Centuary = 86400 * 365 * 10;
+
     run_tests(); //TODO remove at runtime
 
     std::cout << "Main" << std::endl;
 
     body::orbital_entity<body::Vector3> objects[4] = {
-        {{57.909e9,0.0,0.0},{0.0,47.36e3,0.0}, 0.33011e24},
-        {{0.0,0.0,0.0},{0,0,0}, 1.989e30}, //sun
-        {{7.0,8.0,9.0},{1.0,2.0,3.0}, 10.0},
-        {{10.0,11.0,12.0},{1,2,3}, 10.0}
+        {{0.0,0.0,0.0},{0,0,0}, 1.989e30}, // SUN
+        {{57.909e9,0.0,0.0},{0.0,0.0,8.6e6}, 0.33011e24},
+        {{-57.909e9,0.0,0.0},{0.0,0.0,-8.6e6}, 0.33011e24},
     };
 
-    kernel::launcher(objects,4);
-
-    
+    kernel::launcher(objects,3,(57.909e9 * 4),86400 * 365 * 10,Day_In_Secs);   
 }
